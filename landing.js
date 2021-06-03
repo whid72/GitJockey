@@ -13,7 +13,7 @@ let particlesArray;
 let mouse = {
     x: null,
     y: null,
-    radius: (canvas.height / 80) * (canvas.width / 80),
+    radius: (canvas.height / 160) * (canvas.width / 160),
 }
 
 window.addEventListener("mousemove",
@@ -51,20 +51,20 @@ class Particle {
         //check collision detection - mouse position / particle position
         let dx = mouse.x - this.x;
         let dy = mouse.y - this.y
-        //circle formula. 
+        //circle formula for mouse. 
         let distance = Math.sqrt(dx * dx + dy * dy);
         if (distance < mouse.radius + this.size) {
-            if (mouse.x < this.x && this.x < canvas.width - this.size * 10) {
-                this.x += 10;
+            if (mouse.x < this.x && this.x < canvas.width - this.size * 5) {
+                this.x += 5;
             }
-            if (mouse.x > this.x && this.x < canvas.width - this.size * 10) {
-                this.x -= 10;
+            if (mouse.x > this.x && this.x < canvas.width - this.size * 5) {
+                this.x -= 5;
             }
-            if (mouse.y < this.y && this.y < canvas.width - this.size * 10) {
-                this.y += 10;
+            if (mouse.y < this.y && this.y < canvas.width - this.size * 5) {
+                this.y += 5;
             }
-            if (mouse.x > this.y && this.y < canvas.width - this.size * 10) {
-                this.y -= 10;
+            if (mouse.x > this.y && this.y < canvas.width - this.size * 5) {
+                this.y -= 5;
             }
         }
         //move particle
@@ -80,7 +80,7 @@ function init() {
     particlesArray = [];
     let numPar = (canvas.height * canvas.width) / 9000;
     console.log(numPar);
-    for (let i = 0; i < numPar; i++) {
+    for (let i = 0; i < numPar * 1.5; i++) {
         let size = (Math.random() * 5) + 1;
         let x = (Math.random() + ((window.innerWidth - size * 2) - (size * 2)) + size * 2);
         let y = (Math.random() + ((window.innerHeight - size * 2) - (size * 2)) + size * 2);
@@ -111,27 +111,29 @@ function connect(){
     }
 }
 //animation loop
-function animate(){
-    requestAnimationFrame(animate);
-    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    function animate(){
+        requestAnimationFrame(animate);
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-    //to update each individual particle
-    for (let i = 0; i < particlesArray.length; i++) {
-        particlesArray[i].update();
+        //to update each individual particle
+        for (let i = 0; i < particlesArray.length; i++) {
+            particlesArray[i].update();
+        }
+        connect();
     }
-    connect();
-}
-//resize event for the browser. Quality
-window.addEventListener("resize",
-    function(){
-        canvas.width = innerWidth;
-        canvas.height = innerHeight;
-        mouse.radius = ((canvas.height/80) * (canvas.height/80));
-        init();
-    }
-);
+    
+    //resize event for the browser. Quality
+    window.addEventListener("resize",
+        function(){
+            canvas.width = innerWidth;
+            canvas.height = innerHeight;
+            mouse.radius = ((canvas.height/80) * (canvas.height/80));
+            init();
+        }
+    );
 
 //mouseout event
+
 window.addEventListener("mouseout", 
     function(){
         mouse.x = undefined;
